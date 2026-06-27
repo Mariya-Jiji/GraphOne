@@ -25,6 +25,9 @@ import { rateLimiter } from './middleware/rateLimiter.middleware';
 import { responseWrapper } from './middleware/responseWrapper';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.middleware';
 import companiesRouter from './routes/companies.routes';
+import investorsRouter from './routes/investors.routes';
+import foundersRouter from './routes/founders.routes';
+import utilityRouter from './routes/utility.routes';
 
 const app = express();
 
@@ -62,6 +65,9 @@ app.get('/health', (_req, res) => {
 
 // ─── API routes ───────────────────────────────────────────────────────────────
 app.use('/companies', companiesRouter);
+app.use('/investors', investorsRouter);
+app.use('/founders', foundersRouter);
+app.use('/', utilityRouter);
 
 // ─── 404 + Error handling (must be last) ─────────────────────────────────────
 app.use(notFoundHandler);
