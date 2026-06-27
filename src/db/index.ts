@@ -1,17 +1,5 @@
-/**
- * Supabase client singleton
- *
- * We use the service-role key (bypasses Row Level Security) because this is a
- * server-side API.  The anon key is intentionally NOT used here — it would
- * require RLS policies to be configured before any query works.
- *
- * The client is created once and reused across the process lifetime.
- * All environment variables are validated at startup in server.ts so that
- * missing config causes an early, obvious crash rather than a runtime error
- * deep inside a request handler.
- */
-
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import ws from 'ws';
 
 let _client: SupabaseClient | null = null;
 
@@ -33,6 +21,9 @@ export function getDb(): SupabaseClient {
       // Disable auto-refresh tokens — unnecessary for a service-role server client
       autoRefreshToken: false,
       persistSession: false,
+    },
+    realtime: {
+      transport: ws as any,
     },
   });
 
