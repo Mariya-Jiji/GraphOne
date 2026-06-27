@@ -119,16 +119,117 @@ export async function getTrendingCompanies(
     }
 
     const db = getDb();
-    const { data, error } = await db
-      .from('companies')
-      .select('id, name, slug, category, stage, growth_score, funding_total, logo_url, hq_country, is_unicorn')
-      .order('growth_score', { ascending: false, nullsFirst: false })
-      .limit(10);
+    
+    // 1. Fetch data in parallel
+    const ninetyDaysAgo = new Date();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+    const dateStr90 = ninetyDaysAgo.toISOString();
 
-    if (error) throw error;
+    const [companiesRes, roundsRes, newsRes, productsRes] = await Promise.all([
+      db.from('companies').select('id, name, slug, category, stage, growth_score, funding_total, logo_url, hq_country, is_unicorn, employee_count, founded_year'),
+      db.from('funding_rounds').select('company_id, date').order('date', { ascending: false }),
+      db.from('news_articles').select('related_company_ids').gte('published_at', dateStr90),
+      db.from('products').select('company_id, upvotes')
+    ]);
 
-    cache.set(CACHE_KEY, data, CACHE_TTL);
-    res.success(data, { cached: false, ttl_seconds: CACHE_TTL });
+    if (companiesRes.error) throw companiesRes.error;
+    if (roundsRes.error) throw roundsRes.error;
+    if (newsRes.error) throw newsRes.error;
+    if (productsRes.error) throw productsRes.error;
+
+    // Process data into lookups
+    const latestRounds = new Map<string, string>(); // company_id -> date string
+    for (const r of roundsRes.data ?? []) {
+      if (r.company_id && r.date && !latestRounds.has(r.company_id)) {
+        latestRounds.set(r.company_id, r.date);
+      }
+    }
+
+    const newsCounts = new Map<string, number>();
+    for (const article of newsRes.data ?? []) {
+      for (const cid of (article.related_company_ids as string[] ?? [])) {
+        newsCounts.set(cid, (newsCounts.get(cid) || 0) + 1);
+      }
+    }
+
+    const productUpvotes = new Map<string, number>();
+    for (const prod of productsRes.data ?? []) {
+      if (prod.company_id) {
+        productUpvotes.set(prod.company_id, (productUpvotes.get(prod.company_id) || 0) + (prod.upvotes || 0));
+      }
+    }
+
+    const currentYear = new Date().getFullYear();
+    const nowMs = Date.now();
+    let maxEfficiency = 0;
+
+    // First pass: find max efficiency for normalization
+    const companies = companiesRes.data ?? [];
+    const efficiencies = new Map<string, number>();
+    
+    for (const c of companies) {
+      let eff = 0;
+      if (c.employee_count && c.founded_year && c.founded_year <= currentYear) {
+        const age = currentYear - c.founded_year + 1;
+        eff = c.employee_count / age;
+      }
+      efficiencies.set(c.id, eff);
+      if (eff > maxEfficiency) {
+        maxEfficiency = eff;
+      }
+    }
+
+    // Second pass: compute trending_score
+    const scoredCompanies = companies.map(c => {
+      // funding_recency_score
+      let fundingScore = 0;
+      const latestRoundDate = latestRounds.get(c.id);
+      if (latestRoundDate) {
+        const roundMs = new Date(latestRoundDate).getTime();
+        const days = Math.max(0, (nowMs - roundMs) / (1000 * 60 * 60 * 24));
+        fundingScore = 100 * Math.exp(-days / 180);
+      }
+
+      // news_activity_score
+      const newsCount = newsCounts.get(c.id) || 0;
+      const newsScore = Math.min(100, newsCount * 10);
+
+      // product_engagement_score
+      const upvotes = productUpvotes.get(c.id) || 0;
+      const productScore = Math.min(100, Math.log10(upvotes + 1) * 25);
+
+      // growth_efficiency_score
+      let growthScore = 0;
+      if (maxEfficiency > 0) {
+        growthScore = (efficiencies.get(c.id)! / maxEfficiency) * 100;
+      }
+
+      // Weighted score
+      let trending_score = (0.35 * fundingScore) + (0.30 * newsScore) + (0.20 * productScore) + (0.15 * growthScore);
+      // Round to 1 decimal
+      trending_score = Math.round(trending_score * 10) / 10;
+
+      return {
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        category: c.category,
+        stage: c.stage,
+        growth_score: c.growth_score,
+        funding_total: c.funding_total,
+        logo_url: c.logo_url,
+        hq_country: c.hq_country,
+        is_unicorn: c.is_unicorn,
+        trending_score,
+      };
+    });
+
+    // Sort and slice top 10
+    scoredCompanies.sort((a, b) => b.trending_score - a.trending_score);
+    const top10 = scoredCompanies.slice(0, 10);
+
+    cache.set(CACHE_KEY, top10, CACHE_TTL);
+    res.success(top10, { cached: false, ttl_seconds: CACHE_TTL });
   } catch (err) {
     next(err);
   }
