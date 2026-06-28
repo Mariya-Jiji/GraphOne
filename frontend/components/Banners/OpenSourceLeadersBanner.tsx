@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronRight, Star } from 'lucide-react';
 import { Company } from '../../types/api';
+import { CompanyLogo } from '../CompanyLogo';
 
 export function OpenSourceLeadersBanner({ companies }: { companies: Company[] }) {
   const leaders = companies.slice(0, 4);
@@ -24,7 +25,7 @@ export function OpenSourceLeadersBanner({ companies }: { companies: Company[] })
             return (
               <div key={c.id} className="flex-shrink-0 flex items-center gap-3 cursor-pointer group">
                 <div className="w-10 h-10 rounded-md overflow-hidden shrink-0 bg-white/10 p-1">
-                  {c.logo_url && <img src={c.logo_url} alt={c.name} className="w-full h-full object-contain rounded-sm" />}
+                  <CompanyLogo url={c.logo_url} name={c.name} className="w-full h-full object-contain rounded-sm text-sm" />
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-base leading-none mb-1 group-hover:text-emerald-400 transition-colors">{c.name}</h4>

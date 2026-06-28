@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Company } from '../../types/api';
+import { CompanyLogo } from '../CompanyLogo';
 
 export function FrontierLabsBanner({ companies }: { companies: Company[] }) {
   const labs = companies.filter(c => ['OpenAI', 'Anthropic', 'Google DeepMind', 'xAI', 'Meta AI', 'SSI'].includes(c.name) || c.category === 'LLM').slice(0, 6);
@@ -26,7 +27,7 @@ export function FrontierLabsBanner({ companies }: { companies: Company[] }) {
           {labs.map(c => (
             <div key={c.id} className="flex-shrink-0 flex items-center gap-3 cursor-pointer group opacity-70 hover:opacity-100 transition-opacity">
               <div className="w-8 h-8 rounded-md overflow-hidden shrink-0 grayscale group-hover:grayscale-0 transition-all bg-white/10">
-                {c.logo_url && <img src={c.logo_url} alt={c.name} />}
+                <CompanyLogo url={c.logo_url} name={c.name} className="w-full h-full object-cover text-xs" />
               </div>
               <h4 className="font-bold text-white text-lg">{c.name}</h4>
             </div>

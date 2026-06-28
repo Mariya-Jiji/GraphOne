@@ -44,3 +44,39 @@ export async function fetchCompanyFunding(slug: string): Promise<SuccessResponse
 
   return res.json();
 }
+
+export async function fetchCompanyProfile(slug: string): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/companies/${slug}`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch profile for company: ${slug}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchCompanyProducts(slug: string): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/companies/${slug}/products`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch products for company: ${slug}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchCompanyGraph(slug: string): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/companies/${slug}/graph`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch graph for company: ${slug}`);
+  }
+
+  return res.json();
+}

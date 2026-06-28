@@ -13,6 +13,7 @@ export interface Company {
   is_unicorn: boolean;
   growth_score?: number;
   trending_score?: number;
+  valuation?: number;
 }
 
 export interface Investor {
@@ -28,6 +29,8 @@ export interface Product {
   id: string;
   name: string;
   description?: string;
+  category?: string;
+  launch_date?: string;
   upvotes: number;
 }
 
@@ -40,9 +43,13 @@ export interface Founder {
 
 export interface FundingRound {
   id: string;
+  company_id?: string;
   round_type: string;
   amount?: number;
   date?: string;
+  lead_investor_id?: string;
+  lead_investor?: Investor;
+  co_investors?: string[];
 }
 
 export interface PaginatedResponse<T> {

@@ -5,6 +5,7 @@ import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { ChevronRight } from 'lucide-react';
 import { SectionHeader } from './SectionHeader';
 import { Company } from '../types/api';
+import { CompanyLogo } from './CompanyLogo';
 
 // Generate fake sparkline data to visually match the screenshot
 function generateSparklineData() {
@@ -37,11 +38,7 @@ export function FastestGrowingSection({ companies }: { companies: Company[] }) {
             return (
               <div key={company.id} className="bg-white border border-slate-100 shadow-sm rounded-2xl p-4 flex flex-col items-center justify-between group hover:shadow-md transition-all cursor-pointer overflow-hidden relative h-[200px]">
                 <div className="w-12 h-12 rounded-xl mb-3 shadow-sm overflow-hidden bg-slate-50 flex items-center justify-center text-xl font-bold text-slate-800">
-                  {company.logo_url ? (
-                    <img src={company.logo_url} alt={company.name} className="w-full h-full object-cover" />
-                  ) : (
-                    company.name.charAt(0)
-                  )}
+                  <CompanyLogo url={company.logo_url} name={company.name} className="w-full h-full object-cover" />
                 </div>
                 <h4 className="font-bold text-slate-900 text-center text-sm mb-1">{company.name}</h4>
                 <p className="text-xs text-slate-500 text-center mb-4 z-10">{company.category}</p>

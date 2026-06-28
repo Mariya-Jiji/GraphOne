@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Company } from '../../types/api';
+import { CompanyLogo } from '../CompanyLogo';
 
 export function UnicornsBanner({ companies }: { companies: Company[] }) {
   const unicorns = companies.filter(c => c.is_unicorn).slice(0, 6);
@@ -19,12 +20,12 @@ export function UnicornsBanner({ companies }: { companies: Company[] }) {
           {unicorns.map(c => (
             <div key={c.id} className="flex-shrink-0 flex items-center gap-3 bg-white/60 backdrop-blur-sm border border-white rounded-xl px-5 py-3 hover:bg-white transition-colors cursor-pointer">
               <div className="w-8 h-8 rounded-md overflow-hidden shrink-0">
-                {c.logo_url ? <img src={c.logo_url} alt={c.name} /> : <div className="w-full h-full bg-slate-200" />}
+                <CompanyLogo url={c.logo_url} name={c.name} className="w-full h-full object-cover text-xs" />
               </div>
               <div>
                 <h4 className="font-bold text-slate-900 text-sm leading-none mb-1">{c.name}</h4>
                 <p className="text-xs text-brand-pink font-semibold">
-                  ${c.funding_total ? (c.funding_total / 100000000).toFixed(1) : '1.0'}B+
+                  ${c.valuation ? (c.valuation / 100000000000).toFixed(1) : '1.0'}B+
                 </p>
               </div>
             </div>

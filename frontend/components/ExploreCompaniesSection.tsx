@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { SectionHeader } from './SectionHeader';
 import { Company } from '../types/api';
 import { ChevronDown, LayoutGrid, List } from 'lucide-react';
+import { CompanyLogo } from './CompanyLogo';
 
 export function ExploreCompaniesSection({ companies }: { companies: Company[] }) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -34,7 +35,7 @@ export function ExploreCompaniesSection({ companies }: { companies: Company[] })
             {newCompanies.map(c => (
               <div key={c.id} className="flex items-center gap-4 cursor-pointer group">
                 <div className="w-10 h-10 rounded-xl overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
-                  {c.logo_url ? <img src={c.logo_url} alt={c.name} className="w-full h-full object-cover" /> : <span className="text-slate-400 text-xs font-bold">{c.name.charAt(0)}</span>}
+                  <CompanyLogo url={c.logo_url} name={c.name} className="w-full h-full object-cover text-sm" />
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900 text-sm group-hover:text-brand-red transition-colors">{c.name}</h4>
@@ -94,7 +95,7 @@ export function ExploreCompaniesSection({ companies }: { companies: Company[] })
               <div key={c.id} className="border border-slate-100 rounded-xl p-4 hover:shadow-md hover:border-slate-200 transition-all cursor-pointer flex flex-col">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-50 shrink-0">
-                    {c.logo_url && <img src={c.logo_url} alt={c.name} className="w-full h-full object-cover" />}
+                    <CompanyLogo url={c.logo_url} name={c.name} className="w-full h-full object-cover text-sm" />
                   </div>
                   <div>
                     <h4 className="font-bold text-slate-900 leading-tight">{c.name}</h4>

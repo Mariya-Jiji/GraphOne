@@ -1,7 +1,7 @@
-import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Company } from '../types/api';
 import { fetchCompanyFunding } from '../lib/api';
+import { CompanyLogo } from './CompanyLogo';
 
 interface ListColumnProps {
   number: number;
@@ -24,11 +24,7 @@ function ListColumn({ number, title, items, metadataRender }: ListColumnProps) {
         {items.map((company) => (
           <div key={company.id} className="flex items-start gap-4 group cursor-pointer">
             <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center overflow-hidden shrink-0 border border-slate-100">
-              {company.logo_url ? (
-                <img src={company.logo_url} alt={company.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="font-bold text-slate-400">{company.name.charAt(0)}</span>
-              )}
+              <CompanyLogo url={company.logo_url} name={company.name} className="w-full h-full object-cover" />
             </div>
             <div>
               <h4 className="font-bold text-slate-900 group-hover:text-brand-red transition-colors text-sm">{company.name}</h4>
@@ -60,11 +56,13 @@ export async function ThreeColumnRows({ companies }: { companies: Company[] }) {
           const amountStr = latestRound.amount ? `$${(latestRound.amount / 100000000).toFixed(1)}M` : 'Undisclosed';
           const dateStr = new Date(latestRound.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
           return { ...company, _fundingStr: `${amountStr} ${latestRound.round_type || 'Round'} • ${dateStr}` };
+        } else {
+          return { ...company, _fundingStr: 'No funding rounds yet' };
         }
       } catch (e) {
         // Silently fallback if fetch fails
       }
-      return company;
+      return { ...company, _fundingStr: 'No funding rounds yet' };
     })
   );
 
@@ -81,7 +79,7 @@ export async function ThreeColumnRows({ companies }: { companies: Company[] }) {
           number={6} 
           title="Recently Funded AI Startups" 
           items={funded} 
-          metadataRender={(c) => (c as any)._fundingStr || `$${((c.funding_total || 0) / 100000000).toFixed(1)}M Series • ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`} 
+          metadataRender={(c) => (c as any)._fundingStr || 'No funding rounds yet'} 
         />
         <ListColumn 
           number={7} 

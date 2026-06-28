@@ -1,6 +1,7 @@
 import React from 'react';
 import { SectionHeader } from './SectionHeader';
 import { Company } from '../types/api';
+import { CompanyLogo } from './CompanyLogo';
 
 function getGradientClasses(index: number) {
   const gradients = [
@@ -33,11 +34,7 @@ export function EmergingStartupsSection({ companies }: { companies: Company[] })
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-xl font-bold text-slate-900 leading-tight pr-4">{company.name}</h3>
               <div className="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 overflow-hidden text-lg font-bold">
-                {company.logo_url ? (
-                  <img src={company.logo_url} alt={company.name} className="w-full h-full object-cover" />
-                ) : (
-                  company.name.charAt(0)
-                )}
+                <CompanyLogo url={company.logo_url} name={company.name} className="w-full h-full object-cover" />
               </div>
             </div>
             
