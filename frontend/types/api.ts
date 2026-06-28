@@ -1,0 +1,63 @@
+export interface Company {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  category?: string;
+  stage?: string;
+  funding_total?: number;
+  employee_count?: number;
+  founded_year?: number;
+  hq_country?: string;
+  logo_url?: string;
+  is_unicorn: boolean;
+  growth_score?: number;
+  trending_score?: number;
+}
+
+export interface Investor {
+  id: string;
+  name: string;
+  slug: string;
+  type: string;
+  bio?: string;
+  logo_url?: string;
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  description?: string;
+  upvotes: number;
+}
+
+export interface Founder {
+  id: string;
+  name: string;
+  title?: string;
+  photo_url?: string;
+}
+
+export interface FundingRound {
+  id: string;
+  round_type: string;
+  amount?: number;
+  date?: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    has_more: boolean;
+  };
+  error: null;
+}
+
+export interface SuccessResponse<T> {
+  data: T;
+  meta: any;
+  error: null;
+}
