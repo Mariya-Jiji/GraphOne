@@ -23,6 +23,10 @@ export interface Investor {
   type: string;
   bio?: string;
   logo_url?: string;
+  hq_country?: string;
+  founded_year?: number;
+  sector_focus?: string;
+  stage_focus?: string;
 }
 
 export interface Product {
@@ -44,6 +48,7 @@ export interface Founder {
 export interface FundingRound {
   id: string;
   company_id?: string;
+  company?: Company;
   round_type: string;
   amount?: number;
   date?: string;

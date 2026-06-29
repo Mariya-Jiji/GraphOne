@@ -80,3 +80,55 @@ export async function fetchCompanyGraph(slug: string): Promise<SuccessResponse<a
 
   return res.json();
 }
+
+// ==========================================
+// INVESTOR ENDPOINTS
+// ==========================================
+
+export async function fetchInvestorProfile(slug: string): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/investors/${slug}`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch profile for investor: ${slug}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchInvestorInvestments(slug: string): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/investors/${slug}/investments`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch investments for investor: ${slug}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchInvestorCoInvestors(slug: string): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/investors/${slug}/co-investors`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch co-investors for investor: ${slug}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchMostActiveInvestors(): Promise<SuccessResponse<any>> {
+  const res = await fetch(`${API_BASE_URL}/investors/most-active`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch most active investors`);
+  }
+
+  return res.json();
+}
