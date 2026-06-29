@@ -82,7 +82,7 @@ export function CompanyHeader({ company }: { company: Company }) {
             {/* Category Tags */}
             <div className="flex flex-wrap gap-2">
               {tags.map((tag, idx) => (
-                <Link key={idx} href={`/companies?category=${encodeURIComponent(tag)}`}>
+                <Link key={idx} href={`/?category=${encodeURIComponent(tag)}`}>
                   <span className="px-4 py-1.5 rounded-full border border-brand-pink/30 text-brand-red text-sm font-medium hover:bg-brand-pink/5 transition-colors cursor-pointer bg-white">
                     {tag}
                   </span>

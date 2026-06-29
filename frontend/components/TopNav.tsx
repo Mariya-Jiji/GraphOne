@@ -7,12 +7,9 @@ import { Logo } from './Logo';
 import { Search } from 'lucide-react';
 
 const NAV_LINKS = [
-  { name: 'Companies', href: '/companies' },
+  { name: 'Companies', href: '/' },
   { name: 'Products', href: '/products' },
   { name: 'Investors', href: '/investors' },
-  { name: 'Funding', href: '/funding' },
-  { name: 'Jobs', href: '/jobs' },
-  { name: 'News', href: '/news' },
 ];
 
 export function TopNav() {
@@ -36,7 +33,9 @@ export function TopNav() {
 
         <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600 h-full">
           {NAV_LINKS.map(link => {
-            const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
+            const isActive = link.href === '/' 
+              ? pathname === '/' 
+              : pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link 
                 key={link.name} 

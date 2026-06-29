@@ -1,7 +1,6 @@
 import React from 'react';
 import { fetchProducts } from '@/lib/api';
-import { ProductsSidebar } from '@/components/products/ProductsSidebar';
-import { ProductsTopBar } from '@/components/products/ProductsTopBar';
+import { TopNav } from '@/components/TopNav';
 import { ProductsHeroSection } from '@/components/products/ProductsHeroSection';
 import { ProductsFeatureRow } from '@/components/products/ProductsFeatureRow';
 import { ProductsCategoryTabs } from '@/components/products/ProductsCategoryTabs';
@@ -27,15 +26,11 @@ export default async function ProductsPage({
   const { data: allProducts } = await fetchProducts({ limit: '50' });
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans flex">
-      {/* LEFT SIDEBAR */}
-      <ProductsSidebar />
+    <div className="min-h-screen bg-white text-slate-900 font-sans flex flex-col">
+      <TopNav />
       
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 ml-64 flex flex-col bg-white min-h-screen">
-        <ProductsTopBar />
-        
-        <main className="flex-1 overflow-x-hidden pt-6">
+      <main className="flex-1 overflow-x-hidden pt-6">
           <ProductsHeroSection />
           
           <ProductsFeatureRow products={allProducts} />
@@ -50,7 +45,6 @@ export default async function ProductsPage({
             <ProductsRightSidebar />
           </div>
         </main>
-      </div>
     </div>
   );
 }
