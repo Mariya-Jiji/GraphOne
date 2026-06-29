@@ -25,8 +25,11 @@ export interface Investor {
   logo_url?: string;
   hq_country?: string;
   founded_year?: number;
-  sector_focus?: string;
-  stage_focus?: string;
+  sector_focus?: string[];
+  stage_focus?: string[];
+  portfolio_count?: number;
+  aum?: number;
+  portfolio?: Company[];
 }
 
 export interface Product {

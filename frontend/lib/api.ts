@@ -1,4 +1,4 @@
-import { Company, PaginatedResponse, SuccessResponse } from '../types/api';
+import { Company, Investor, PaginatedResponse, SuccessResponse } from '../types/api';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -84,6 +84,25 @@ export async function fetchCompanyGraph(slug: string): Promise<SuccessResponse<a
 // ==========================================
 // INVESTOR ENDPOINTS
 // ==========================================
+
+export async function fetchInvestors(params?: Record<string, string>): Promise<PaginatedResponse<Investor>> {
+  const url = new URL(`${API_BASE_URL}/investors`);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+  }
+
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch investors');
+  }
+
+  return res.json();
+}
 
 export async function fetchInvestorProfile(slug: string): Promise<SuccessResponse<any>> {
   const res = await fetch(`${API_BASE_URL}/investors/${slug}`, {
