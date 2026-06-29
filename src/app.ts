@@ -28,6 +28,8 @@ import companiesRouter from './routes/companies.routes';
 import investorsRouter from './routes/investors.routes';
 import foundersRouter from './routes/founders.routes';
 import utilityRouter from './routes/utility.routes';
+import productsRouter from './routes/products.routes';
+import newsRouter from './routes/news.routes';
 
 const app = express();
 
@@ -67,6 +69,8 @@ app.get('/health', (_req, res) => {
 app.use('/companies', companiesRouter);
 app.use('/investors', investorsRouter);
 app.use('/founders', foundersRouter);
+app.use('/products', productsRouter);
+app.use('/news', newsRouter);
 app.use('/', utilityRouter);
 
 // ─── 404 + Error handling (must be last) ─────────────────────────────────────
