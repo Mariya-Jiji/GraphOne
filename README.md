@@ -1,9 +1,18 @@
-# GraphOne Backend API
+# GraphOne
 
-REST API for **GraphOne** — an AI startup intelligence platform tracking AI companies, investors, funding rounds, founders, products, and news. Built as part of The AI Signal's engineering trial task.
+**GraphOne** is a full-stack AI startup intelligence platform tracking AI companies, investors, funding rounds, founders, products, and news. 
+
+This repository contains both the **Backend API** (Node.js/Express) and the **Frontend Web App** (Next.js/React).
 
 ## Tech Stack
 
+### Frontend
+- **Framework:** Next.js (App Router) + React
+- **Styling:** Tailwind CSS
+- **Animations & Data Viz:** Framer Motion, Recharts
+- **Icons:** Lucide React
+
+### Backend
 - **Runtime:** Node.js + Express
 - **Language:** TypeScript (strict mode)
 - **Database:** Supabase (Postgres)
@@ -12,10 +21,12 @@ REST API for **GraphOne** — an AI startup intelligence platform tracking AI co
 
 ## Local Setup
 
-1. Clone the repo and install dependencies:
+To run the platform locally, you will need to start both the backend API and the frontend development server.
+
+### 1. Backend Setup
+
+1. Install dependencies in the root folder:
    ```bash
-   git clone <repo-url>
-   cd graphone-backend
    npm install
    ```
 
@@ -39,14 +50,36 @@ REST API for **GraphOne** — an AI startup intelligence platform tracking AI co
    npm run seed
    ```
 
-5. Start the dev server:
+5. Start the backend dev server:
    ```bash
    npm run dev
    ```
-   Server runs at `http://localhost:3000`. Health check: `GET /health`
+   *The API server will run on port 1000.* Health check: `GET http://localhost:1000/health`
+
+### 2. Frontend Setup
+
+1. Open a **new terminal** and navigate to the `frontend` directory:
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. Set up the frontend environment variables by creating a `.env.local` file:
+   ```bash
+   # frontend/.env.local
+   NEXT_PUBLIC_API_URL=http://localhost:1000
+   ```
+
+3. Start the Next.js development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
 ## Folder Structure
 
+### Backend (Root)
 ```
 src/
   app.ts             — Express middleware pipeline + router mounting
@@ -63,6 +96,16 @@ scripts/seed.ts      — Database seed script
 ```
 
 **Design principle:** routes contain no logic, controllers contain no raw data access, and Zod schemas enforce the boundary between client input and application code.
+
+### Frontend (`/frontend`)
+```
+frontend/
+  app/               — Next.js App Router (Pages, Layouts, and Routing)
+  components/        — Reusable UI components (Hero, Navigation, Tables)
+  lib/               — API client functions and utility methods
+  types/             — Shared TypeScript interfaces bridging API and UI
+  public/            — Static assets (fonts, icons, images)
+```
 
 ## API Endpoints
 
