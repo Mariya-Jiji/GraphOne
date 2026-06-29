@@ -1,3 +1,5 @@
+"use client";
+
 import { Flame, Trophy, ArrowRight, Code } from 'lucide-react';
 import { Product } from '../../types/api';
 
