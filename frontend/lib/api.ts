@@ -1,4 +1,4 @@
-import { Company, Investor, PaginatedResponse, SuccessResponse } from '../types/api';
+import { Company, Investor, Product, NewsArticle, PaginatedResponse, SuccessResponse } from '../types/api';
 
 const API_BASE_URL = 'http://localhost:3000';
 
@@ -147,6 +147,76 @@ export async function fetchMostActiveInvestors(): Promise<SuccessResponse<any>> 
 
   if (!res.ok) {
     throw new Error(`Failed to fetch most active investors`);
+  }
+
+  return res.json();
+}
+
+// ==========================================
+// PRODUCTS ENDPOINTS
+// ==========================================
+
+export async function fetchProducts(params?: Record<string, string>): Promise<PaginatedResponse<Product>> {
+  const url = new URL(`${API_BASE_URL}/products`);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+  }
+
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch products');
+  }
+
+  return res.json();
+}
+
+export async function fetchProduct(slug: string): Promise<SuccessResponse<Product>> {
+  const res = await fetch(`${API_BASE_URL}/products/${slug}`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch product: ${slug}`);
+  }
+
+  return res.json();
+}
+
+// ==========================================
+// NEWS ENDPOINTS
+// ==========================================
+
+export async function fetchNews(params?: Record<string, string>): Promise<PaginatedResponse<NewsArticle>> {
+  const url = new URL(`${API_BASE_URL}/news`);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+  }
+
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch news');
+  }
+
+  return res.json();
+}
+
+export async function fetchTrendingNews(): Promise<SuccessResponse<NewsArticle[]>> {
+  const res = await fetch(`${API_BASE_URL}/news/trending`, {
+    next: { revalidate: 60 }
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch trending news');
   }
 
   return res.json();

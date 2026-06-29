@@ -18,13 +18,15 @@ import { InvestorFooterCTA } from '@/components/investors/InvestorFooterCTA';
 export default async function InvestorsDiscoveryPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const resolvedSearchParams = await searchParams;
+  
   // Extract potential filters from searchParams for GET /investors
   const params: Record<string, string> = {};
-  if (typeof searchParams.type === 'string') params.type = searchParams.type;
-  if (typeof searchParams.sector === 'string') params.sector = searchParams.sector;
-  if (typeof searchParams.stage === 'string') params.stage_focus = searchParams.stage;
+  if (typeof resolvedSearchParams.type === 'string') params.type = resolvedSearchParams.type;
+  if (typeof resolvedSearchParams.sector === 'string') params.sector = resolvedSearchParams.sector;
+  if (typeof resolvedSearchParams.stage === 'string') params.stage_focus = resolvedSearchParams.stage;
 
   // 1. Fetch main investors pool
   const { data: investors } = await fetchInvestors(params);

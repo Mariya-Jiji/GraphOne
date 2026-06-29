@@ -34,11 +34,28 @@ export interface Investor {
 
 export interface Product {
   id: string;
+  company_id?: string;
   name: string;
   description?: string;
   category?: string;
   launch_date?: string;
   upvotes: number;
+  company?: {
+    id: string;
+    name: string;
+    logo_url?: string;
+  };
+}
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  url: string;
+  published_at?: string;
+  source?: string;
+  tag?: string;
+  related_company_ids?: string[];
+  summary?: string;
 }
 
 export interface Founder {
