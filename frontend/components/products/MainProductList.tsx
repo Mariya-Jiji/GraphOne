@@ -117,7 +117,14 @@ export function MainProductList({ products, totalProducts }: MainProductListProp
               <div className="bg-white border border-slate-100 rounded-2xl p-5 flex items-center gap-6 hover:shadow-md transition-shadow cursor-pointer group">
                 <div className="w-16 h-16 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                   {product.company?.logo_url ? (
-                    <img src={product.company.logo_url} alt={product.name} className="w-full h-full object-cover" />
+                    <img 
+                      src={product.company.logo_url} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(product.name)}&background=random&color=fff`;
+                      }}
+                    />
                   ) : (
                     <span className="font-bold text-slate-400 text-xl">{product.name.charAt(0)}</span>
                   )}
