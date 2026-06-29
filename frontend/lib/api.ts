@@ -1,6 +1,6 @@
 import { Company, Investor, Product, NewsArticle, PaginatedResponse, SuccessResponse } from '../types/api';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export async function fetchCompanies(params?: Record<string, string>): Promise<PaginatedResponse<Company>> {
   const url = new URL(`${API_BASE_URL}/companies`);
