@@ -11,6 +11,8 @@ const FilterPill = ({ label }: { label: string }) => (
   </button>
 );
 
+import { CompanyLogo } from '../CompanyLogo';
+
 export function InvestorsHeroSection({ investors }: { investors: Investor[] }) {
   // Take a few top investors for the floating chips
   const floatingInvestors = investors.slice(0, 6);
@@ -88,11 +90,7 @@ export function InvestorsHeroSection({ investors }: { investors: Investor[] }) {
                 style={{ top: pos.top, left: pos.left, right: pos.right, bottom: pos.bottom, transform: `rotate(${pos.rotate})` }}
               >
                 <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200">
-                  {investor.logo_url ? (
-                    <img src={investor.logo_url} alt={investor.name} className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="text-xs font-bold text-slate-500">{investor.name.substring(0, 1)}</span>
-                  )}
+                  <CompanyLogo logoUrl={investor.logo_url} name={investor.name} className="w-full h-full object-cover text-xs" />
                 </div>
                 <span className="text-sm font-semibold text-slate-800 whitespace-nowrap">
                   {investor.name}

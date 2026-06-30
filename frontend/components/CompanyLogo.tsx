@@ -23,15 +23,18 @@ function getHashColor(name: string) {
 }
 
 interface CompanyLogoProps {
-  url?: string;
+  url?: string; // legacy support
+  logoUrl?: string;
   name: string;
   className?: string;
 }
 
-export function CompanyLogo({ url, name, className = '' }: CompanyLogoProps) {
+export function CompanyLogo({ url, logoUrl, name, className = '' }: CompanyLogoProps) {
   const [hasError, setHasError] = useState(false);
+  
+  const finalUrl = logoUrl || url;
 
-  if (!url || hasError) {
+  if (!finalUrl || hasError) {
     const bgColor = getHashColor(name || '?');
     const initial = name ? name.charAt(0).toUpperCase() : '?';
     return (
@@ -43,7 +46,7 @@ export function CompanyLogo({ url, name, className = '' }: CompanyLogoProps) {
 
   return (
     <img 
-      src={url} 
+      src={finalUrl} 
       alt={name} 
       className={className} 
       onError={() => setHasError(true)} 

@@ -4,6 +4,8 @@ import { Investor } from '../../types/api';
 import { ArrowRight, Flame } from 'lucide-react';
 import Link from 'next/link';
 
+import { CompanyLogo } from '../CompanyLogo';
+
 function getGradientClasses(index: number) {
   const gradients = [
     'from-[#1e1b4b] to-[#312e81]',
@@ -44,11 +46,7 @@ export function TrendingInvestorsSection({ investors }: { investors: Investor[] 
             
             <div className="relative z-10 flex justify-between items-start">
               <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-sm font-bold bg-white/5 backdrop-blur-sm overflow-hidden">
-                {investor.logo_url ? (
-                  <img src={investor.logo_url} alt={investor.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span>0{index + 1}</span>
-                )}
+                <CompanyLogo logoUrl={investor.logo_url} name={investor.name} className="w-full h-full object-cover" />
               </div>
               <div className="flex items-center gap-1 bg-white/10 text-white px-2 py-1 rounded-md text-xs font-medium backdrop-blur-sm border border-white/10">
                 <Flame className="w-3 h-3 text-brand-pink" />

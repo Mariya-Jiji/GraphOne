@@ -2,6 +2,7 @@
 
 import { Flame, Trophy, ArrowRight, Code } from 'lucide-react';
 import { Product } from '../../types/api';
+import { CompanyLogo } from '../CompanyLogo';
 
 interface ProductsFeatureRowProps {
   products: Product[];
@@ -92,18 +93,7 @@ export function ProductsFeatureRow({ products }: ProductsFeatureRowProps) {
           {productOfTheDay ? (
             <div className="flex gap-4 items-center mb-6 relative z-10">
               <div className="w-14 h-14 rounded-xl border border-slate-200 bg-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
-                {productOfTheDay.company?.logo_url ? (
-                  <img 
-                    src={productOfTheDay.company.logo_url} 
-                    alt={productOfTheDay.name} 
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(productOfTheDay.name)}&background=random&color=fff`;
-                    }}
-                  />
-                ) : (
-                  <span className="font-bold text-slate-400 text-xl">{productOfTheDay.name.charAt(0)}</span>
-                )}
+                <CompanyLogo logoUrl={productOfTheDay.company?.logo_url} name={productOfTheDay.company?.name || productOfTheDay.name} className="w-full h-full object-cover" />
               </div>
               <div>
                 <h3 className="font-bold text-lg text-slate-900">{productOfTheDay.name}</h3>

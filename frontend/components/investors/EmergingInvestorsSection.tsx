@@ -3,6 +3,7 @@ import { SectionHeader } from '../SectionHeader';
 import { Investor } from '../../types/api';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { CompanyLogo } from '../CompanyLogo';
 
 export function EmergingInvestorsSection({ investors }: { investors: Investor[] }) {
   // Sort by lowest portfolio count to find "emerging" (or use a founded_year filter if available)
@@ -30,11 +31,7 @@ export function EmergingInvestorsSection({ investors }: { investors: Investor[] 
             className="flex flex-col items-center p-4 bg-white border border-slate-200 rounded-xl hover:border-brand-pink hover:shadow-md transition-all group"
           >
             <div className="w-14 h-14 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center overflow-hidden mb-3">
-              {investor.logo_url ? (
-                <img src={investor.logo_url} alt={investor.name} className="w-full h-full object-cover" />
-              ) : (
-                <span className="font-bold text-slate-400">{investor.name.substring(0, 2).toUpperCase()}</span>
-              )}
+              <CompanyLogo logoUrl={investor.logo_url} name={investor.name} className="w-full h-full object-cover" />
             </div>
             <h4 className="font-semibold text-sm text-slate-900 text-center line-clamp-2 leading-tight group-hover:text-brand-pink transition-colors">
               {investor.name}

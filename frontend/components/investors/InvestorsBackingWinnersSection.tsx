@@ -3,6 +3,7 @@ import { SectionHeader } from '../SectionHeader';
 import { Company, Investor } from '../../types/api';
 import Link from 'next/link';
 import { Trophy } from 'lucide-react';
+import { CompanyLogo } from '../CompanyLogo';
 
 export function InvestorsBackingWinnersSection({ 
   companies,
@@ -30,11 +31,7 @@ export function InvestorsBackingWinnersSection({
               <div className="p-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden">
-                    {company.logo_url ? (
-                      <img src={company.logo_url} alt={company.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <span className="font-bold text-slate-400">{company.name.substring(0, 1)}</span>
-                    )}
+                    <CompanyLogo logoUrl={company.logo_url} name={company.name} className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <h3 className="font-bold text-lg text-slate-900">{company.name}</h3>
@@ -53,11 +50,7 @@ export function InvestorsBackingWinnersSection({
                       <div key={`${investor.id}-${i}`} className="flex items-center justify-between group">
                         <div className="flex items-center gap-2">
                            <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-200 shrink-0">
-                            {investor.logo_url ? (
-                              <img src={investor.logo_url} alt={investor.name} className="w-full h-full object-cover" />
-                            ) : (
-                              <span className="text-[9px] font-bold text-slate-500">{investor.name.substring(0, 1)}</span>
-                            )}
+                            <CompanyLogo logoUrl={investor.logo_url} name={investor.name} className="w-full h-full object-cover text-[9px]" />
                           </div>
                           <span className="text-sm font-semibold text-slate-700">{investor.name}</span>
                         </div>
